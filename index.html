@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>ClauseLight — Offline Contract Analyzer & Clause-Level Risk Tool</title>
-  <meta name="description" content="ClauseLight is a premium, privacy-first contract analyzer that works 100% offline. Highlight risky clauses, generate fallback legal language, and gain legal clarity — all in your browser, no uploads.">
+  <meta name="description" content="ClauseLight is a premium, privacy-first contract analyzer that works 100% offline. Highlight risky clauses, generate fallback legal language, and gain legal clarity.">
   <link rel="canonical" href="https://neolexus.github.io/clauselight-tool/">
 
   <!-- Open Graph -->
@@ -21,235 +21,751 @@
   <meta name="twitter:description" content="Analyze contracts and highlight risks in your browser — no uploads, no accounts.">
   <meta name="twitter:image" content="https://your-github-username.github.io/clauselight/assets/og-clauselight.png">
 
-  <!-- Structured data: SoftwareApplication -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "ClauseLight",
-    "url": "https://neolexus.github.io/clauselight-tool/",
-    "description": "ClauseLight is a privacy-first, local-only contract analyzer that highlights risky clauses and suggests plain-English fallback language. No uploads, no accounts.",
-    "operatingSystem": "Web",
-    "applicationCategory": "LegalTechnology",
-    "author": {"@type":"Organization","name":"ClauseLight"},
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    }
-  }
-  </script>
-
-  <!-- Favicon (SVG, data URI, premium look) -->
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230B1C2A'/%3E%3Cpath d='M28 34h44v8H28zM28 50h44v8H28z' fill='%2350E3C2'/%3E%3Ccircle cx='80' cy='80' r='12' fill='%2350E3C2' fill-opacity='0.12'/%3E%3C/svg%3E">
-
   <style>
     html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', 'Segoe UI', Arial, sans-serif; }
-    .glass { background: linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01)); backdrop-filter: blur(10px);}
-    .soft-shadow { box-shadow: 0 10px 40px rgba(20,30,50,0.29),0 1.5px 5px rgba(20,30,50,0.13);}
-    .accent-glow { filter: drop-shadow(0 6px 30px rgba(80,227,194,0.17)); }
-    .cta-glow { box-shadow: 0 0 0 4px #50E3C233; }
-    .animated-gradient {
-      background: linear-gradient(100deg, #50E3C2 20%, #3bd27c 80%, #1d3342 100%);
-      background-size: 200% 200%;
-      animation: gradientMove 5s ease-in-out infinite;
+    body {
+      margin: 0;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      color: #f1f5f9;
+      background: linear-gradient(135deg, #07111a 0%, #071826 70%, #081426 100%) fixed;
+      min-height: 100vh;
+      box-sizing: border-box;
+      line-height: 1.6;
     }
-    @keyframes gradientMove {
-      0% { background-position: 0% 80%;}
-      50% { background-position: 100% 20%;}
-      100% {background-position: 0% 80%;}
-    }
-    .feature-card:hover { transform: translateY(-4px) scale(1.015); box-shadow: 0 16px 40px rgba(80,227,194,0.10), 0 3px 8px rgba(20,30,50,0.18);}
+
+    a { color: inherit; text-decoration: none; transition: color 0.2s; }
+    a:hover { color: #fff; }
+
     .fade-in { animation: fadeIn 1s both;}
     @keyframes fadeIn { from { opacity:0; transform:translateY(20px);} to {opacity:1; transform:none;}}
-    </style>
 
-<body class="antialiased text-slate-100 bg-gradient-to-br from-[#07111a] via-[#071826] to-[#081426] bg-fixed">
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 0;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .nav-logo-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      background: #0B1C2A;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 40px rgba(20,30,50,0.29),0 1.5px 5px rgba(20,30,50,0.13);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .nav-links a {
+      font-size: 15px;
+      color: #cbd5e1;
+      font-weight: 500;
+      padding: 7px 0;
+    }
+    .nav-links a:hover { color: #fff; }
+    .cta-btn {
+      margin-left: 18px;
+      background: #50E3C2;
+      color: #061219;
+      padding: 11px 25px;
+      border-radius: 999px;
+      font-weight: 600;
+      box-shadow: 0 0 0 4px #50E3C233;
+      transition: background 0.2s;
+      text-decoration: none;
+      border: none;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    .cta-btn:hover { background: #3bd27c; }
+
+    /* HERO */
+    header {
+      padding-top: 60px;
+      padding-bottom: 64px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+    @media (min-width: 768px) {
+      header { grid-template-columns: 1fr 1fr; }
+    }
+    .hero-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: -1px;
+      color: #fff;
+      margin-bottom: 24px;
+    }
+    @media (min-width: 768px) {
+      .hero-title { font-size: 3rem; }
+    }
+    .hero-desc {
+      color: #cbd5e1;
+      font-size: 1.15rem;
+      max-width: 550px;
+      margin-bottom: 32px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 18px;
+      margin-top: 24px;
+    }
+    .cta-btn-lg {
+      padding: 15px 32px;
+      font-size: 19px;
+    }
+    .secondary-btn {
+      border: 1.5px solid #334155;
+      color: #cbd5e1;
+      background: none;
+      padding: 13px 28px;
+      border-radius: 999px;
+      font-size: 17px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .secondary-btn:hover {
+      background: #1e293b;
+    }
+    .hero-stats {
+      margin-top: 28px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      font-size: 15px;
+      color: #94a3b8;
+    }
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .stat-title {
+      color: #f1f5f9;
+      font-weight: 600;
+    }
+    .stat-desc {
+      font-size: 13px;
+      color: #cbd5e1;
+    }
+    /* Hero Mockup Card */
+    .hero-mockup {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      z-index: 1;
+    }
+    .mockup-card {
+      background: linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01));
+      backdrop-filter: blur(10px);
+      border-radius: 28px;
+      border: 1.5px solid #334155;
+      box-shadow: 0 10px 40px rgba(20,30,50,0.29),0 1.5px 5px rgba(20,30,50,0.13);
+      overflow: hidden;
+      min-width: 340px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      margin-bottom: 0;
+      width: 100%;
+    }
+    .mockup-card:hover {
+      transform: translateY(-4px) scale(1.015);
+      box-shadow: 0 16px 40px rgba(80,227,194,0.10), 0 3px 8px rgba(20,30,50,0.18);
+    }
+    .mockup-content {
+      padding: 28px;
+    }
+    .mockup-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 15px;
+      color: #94a3b8;
+    }
+    .mockup-file {
+      color: #50E3C2;
+      font-weight: 500;
+    }
+    .mockup-status {
+      font-size: 12px;
+      background: #1e293b;
+      padding: 2px 10px;
+      border-radius: 999px;
+      color: #94a3b8;
+    }
+    .mockup-clauses {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .mockup-clause {
+      background: #061826;
+      border-radius: 12px;
+      padding: 16px;
+      border-left: 4px solid #f87171;
+      font-size: 15px;
+      color: #e2e8f0;
+      transition: transform 0.2s;
+    }
+    .renewal { border-left-color: #fbbf24; }
+    .termination { border-left-color: #34d399; }
+    .mockup-clause span {
+      background: #f87171b3;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #fecaca;
+    }
+    .renewal span {
+      background: #fbbf2440;
+      color: #fde68a;
+    }
+    .termination span {
+      background: #34d39933;
+      color: #6ee7b7;
+    }
+    .mockup-actions {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1.5px solid #334155;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .mockup-actions span {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+    .mockup-btns {
+      display: flex;
+      gap: 10px;
+    }
+    .mockup-actions button {
+      font-size: 13px;
+      background: #1e293b;
+      color: #f1f5f9;
+      padding: 5px 14px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .mockup-actions button:last-child {
+      background: #50E3C2;
+      color: #061219;
+    }
+    .mockup-actions button:hover { background: #334155; }
+    .mockup-actions button:last-child:hover { background: #3bd27c; }
+    /* Hero Glow */
+    .hero-glow {
+      position: absolute;
+      left: -48px; top: -40px;
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 60% 40%, #50E3C2 0%, #ffffff00 80%);
+      filter: blur(42px);
+      opacity: 0.37;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* FEATURES */
+    #features {
+      padding-top: 48px;
+      padding-bottom: 48px;
+      text-align: center;
+    }
+    .features-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .features-desc {
+      color: #94a3b8;
+      max-width: 640px;
+      margin: 0 auto 32px auto;
+      font-size: 17px;
+    }
+    .features-grid {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+    @media (min-width: 900px) {
+      .features-grid { grid-template-columns: 1fr 1fr 1fr; }
+    }
+    .feature-card {
+      background: linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01));
+      border: 1.5px solid #334155;
+      border-radius: 22px;
+      box-shadow: 0 10px 40px rgba(20,30,50,0.13),0 1.5px 5px rgba(20,30,50,0.10);
+      padding: 32px;
+      text-align: left;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px) scale(1.015);
+      box-shadow: 0 16px 40px rgba(80,227,194,0.10), 0 3px 8px rgba(20,30,50,0.18);
+    }
+    .feature-card h3 {
+      color: #50E3C2;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .feature-card p {
+      color: #94a3b8;
+      font-size: 16px;
+    }
+
+    /* CTA + DEMO */
+    #try {
+      padding-top: 56px;
+      padding-bottom: 56px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .demo-box {
+      background: linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01));
+      border: 1.5px solid #334155;
+      border-radius: 28px;
+      box-shadow: 0 10px 40px rgba(20,30,50,0.13),0 1.5px 5px rgba(20,30,50,0.10);
+      padding: 40px;
+    }
+    .demo-header {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      margin-bottom: 24px;
+    }
+    @media (min-width: 768px) {
+      .demo-header { flex-direction: row; align-items: center; justify-content: space-between; }
+    }
+    .demo-header h3 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin: 0;
+    }
+    .demo-header p {
+      color: #94a3b8;
+      font-size: 17px;
+      margin-top: 6px;
+    }
+    .demo-links {
+      display: flex;
+      gap: 13px;
+    }
+    .demo-links a {
+      font-size: 13px;
+      border-radius: 999px;
+      padding: 7px 19px;
+      background: #1e293b;
+      color: #f1f5f9;
+      transition: background 0.2s, color 0.2s;
+    }
+    .demo-links a:last-child {
+      background: #50E3C2;
+      color: #061219;
+      font-weight: 500;
+    }
+    .demo-links a:hover { background: #334155; }
+    .demo-links a:last-child:hover { background: #3bd27c; color: #061219; }
+    .demo-controls {
+      display: flex;
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .demo-controls button {
+      font-size: 15px;
+      border-radius: 999px;
+      padding: 10px 24px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s, color 0.2s;
+    }
+    .demo-controls button:first-child {
+      background: #50E3C2;
+      color: #061219;
+      box-shadow: 0 0 0 4px #50E3C233;
+    }
+    .demo-controls button:first-child:hover { background: #3bd27c; }
+    .demo-controls button:last-child {
+      background: #1e293b;
+      color: #cbd5e1;
+      border: 1.5px solid #334155;
+    }
+    .demo-controls button:last-child:hover { background: #334155; }
+    #demoInput {
+      width: 100%;
+      background: #03121a;
+      border: 1.5px solid #334155;
+      border-radius: 8px;
+      color: #f1f5f9;
+      font-size: 17px;
+      padding: 16px;
+      margin-bottom: 12px;
+      margin-top: 8px;
+      resize: vertical;
+      min-height: 100px;
+      font-family: inherit;
+    }
+    #demoResult {
+      margin-top: 22px;
+      padding: 20px;
+      border-radius: 16px;
+      background: #061426;
+      color: #e2e8f0;
+      display: none;
+    }
+    #demoResult .font-semibold { font-weight: 600; }
+    #demoResult .text-lg { font-size: 1.08rem; }
+    #demoResult .mt-2 { margin-top: 10px; }
+    #demoResult .mt-3 { margin-top: 18px; }
+    #demoResult .text-sm { font-size: 14px; }
+    #copyFallback {
+      background: #1e293b;
+      color: #f1f5f9;
+      border-radius: 999px;
+      padding: 7px 20px;
+      border: none;
+      transition: background 0.2s;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    #copyFallback:hover { background: #334155; }
+    #fallbackText {
+      color: #50E3C2;
+      font-size: 14px;
+    }
+
+    .ecosystem {
+      margin-top: 32px;
+      text-align: center;
+      font-size: 16px;
+      color: #94a3b8;
+      border-radius: 16px;
+      background: #061426;
+      padding: 28px;
+      box-shadow: 0 10px 40px rgba(20,30,50,0.08),0 1.5px 5px rgba(20,30,50,0.06);
+    }
+    .highlight {
+      color: #50E3C2;
+      font-weight: 600;
+    }
+    .ecosystem a {
+      color: #50E3C2;
+      text-decoration: underline;
+      margin-left: 4px;
+      margin-right: 4px;
+      transition: color 0.2s;
+    }
+    .ecosystem a:hover { color: #3bd27c; }
+
+    .donate {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 16px;
+      color: #cbd5e1;
+    }
+    .donate-link {
+      color: #50E3C2;
+      text-decoration: underline;
+      margin-left: 4px;
+      transition: color 0.2s;
+    }
+    .donate-link:hover { color: #3bd27c; }
+
+    /* SEO/Education Section */
+    #seo-sections {
+      padding-top: 56px;
+      padding-bottom: 56px;
+      max-width: 950px;
+      margin: 0 auto;
+    }
+    .seo-block {
+      margin-bottom: 54px;
+    }
+    .seo-block:last-child { margin-bottom: 0; }
+    .seo-block h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #50E3C2;
+      margin-bottom: 10px;
+    }
+    .seo-block p {
+      color: #cbd5e1;
+      font-size: 18px;
+    }
+    .seo-block ul {
+      margin-top: 14px;
+      margin-bottom: 0;
+      color: #94a3b8;
+      list-style: disc inside;
+      font-size: 15px;
+    }
+
+    /* FOOTER */
+    footer {
+      padding-top: 38px;
+      padding-bottom: 38px;
+      color: #94a3b8;
+      font-size: 16px;
+      background: none;
+      box-shadow: none;
+      border: none;
+    }
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    @media (min-width: 768px) {
+      .footer-content {
+        flex-direction: row;
+      }
+    }
+    .footer-brand {
+      font-size: 22px;
+      color: #fff;
+      font-weight: 600;
+    }
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      font-size: 16px;
+    }
+    .footer-links a { color: #94a3b8; }
+    .footer-links a:hover { color: #fff; }
+  </style>
+</head>
+<body>
 
   <!-- NAV -->
-  <nav class="max-w-7xl mx-auto px-6 py-7 flex items-center justify-between fade-in" aria-label="Site Navigation">
-    <div class="flex items-center gap-4">
-      <div class="w-11 h-11 rounded-xl bg-[#0B1C2A] p-2 soft-shadow flex items-center justify-center">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" class="accent-glow">
-          <rect x="1" y="3" width="22" height="18" rx="3" fill="#071826"/>
-          <path d="M6 8h12M6 12h8" stroke="#50E3C2" stroke-width="1.7" stroke-linecap="round"/>
-        </svg>
+  <div class="container fade-in">
+    <nav aria-label="Site Navigation">
+      <div class="nav-logo">
+        <div class="nav-logo-icon">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+            <rect x="1" y="3" width="22" height="18" rx="3" fill="#071826"/>
+            <path d="M6 8h12M6 12h8" stroke="#50E3C2" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <span style="font-weight:800;font-size:18px;letter-spacing:1px;color:#fff;">ClauseLight</span>
+          <div style="font-size:13px;color:#94a3b8;">Offline Contract Analyzer</div>
+        </div>
       </div>
-      <div>
-        <span class="font-extrabold text-lg tracking-wide text-white">ClauseLight</span>
-        <div class="text-xs text-slate-400">Offline Contract Analyzer</div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#try" class="cta-btn">Try Free</a>
       </div>
-    </div>
-    <div class="flex items-center gap-5">
-      <a href="#features" class="text-sm text-slate-300 hover:text-white">Features</a>
-      <a href="#how" class="text-sm text-slate-300 hover:text-white">How it works</a>
-      <a href="#try" class="ml-4 inline-flex items-center gap-2 bg-[#50E3C2] text-[#061219] px-5 py-2.5 rounded-full font-semibold cta-glow shadow-md hover:bg-[#3bd27c] transition">Try Free</a>
-    </div>
-  </nav>
+    </nav>
+  </div>
 
   <!-- HERO -->
-  <header class="max-w-7xl mx-auto px-6 pt-10 pb-16 grid md:grid-cols-2 gap-10 items-center fade-in">
-    <div class="space-y-8">
-      <h1 class="text-4xl md:text-5xl font-extrabold leading-tight tracking-tight text-white">
-        Instantly Highlight Contract Risks — 100% Offline, In Your Browser
-      </h1>
-      <p class="text-slate-300 max-w-xl text-lg">ClauseLight is a privacy-first contract analyzer. Split contract text into clauses, highlight risks like <span class="text-[#50E3C2]">indemnity</span>, <span class="text-[#50E3C2]">auto-renewal</span> or <span class="text-[#50E3C2]">termination</span>, and generate plain-English fallback language — all without uploading your file.</p>
-      <div class="flex gap-4 mt-6">
-        <a href="#try" class="inline-flex items-center gap-2 bg-[#50E3C2] text-[#061219] px-6 py-3 rounded-full font-bold shadow-lg hover:bg-[#3bd27c] transition cta-glow text-lg">Paste Your Contract</a>
-        <a href="#how" class="inline-flex items-center gap-2 border border-slate-700 px-5 py-3 rounded-full text-base text-slate-300 hover:bg-slate-800 transition">See How It Works</a>
-      </div>
-      <div class="mt-7 flex flex-wrap gap-8 text-sm text-slate-400">
-        <div class="flex items-center gap-3">
-          <svg width="18" height="18" viewBox="0 0 24 24"><path d="M12 2v6l4 2" stroke="#50E3C2" stroke-width="1.7" stroke-linecap="round" fill="none"/></svg>
-          <div>
-            <div class="text-slate-200 font-medium">100% Local</div>
-            <div class="text-xs">No file leaves your device</div>
-          </div>
+  <div class="container fade-in">
+    <header>
+      <div>
+        <h1 class="hero-title">
+          Instantly Highlight Contract Risks — 100% Offline, In Your Browser
+        </h1>
+        <p class="hero-desc">
+          ClauseLight is a privacy-first contract analyzer. Split contract text into clauses, highlight risks like <span style="color:#50E3C2;">indemnity</span>, <span style="color:#50E3C2;">auto-renewal</span>, <span style="color:#50E3C2;">termination</span> and more — all locally, with no uploads or accounts.
+        </p>
+        <div class="hero-actions">
+          <a href="#try" class="cta-btn cta-btn-lg">Paste Your Contract</a>
+          <a href="#how" class="secondary-btn">See How It Works</a>
         </div>
-        <div class="flex items-center gap-3">
-          <svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" stroke="#50E3C2" stroke-width="1.7" fill="none"/></svg>
-          <div>
-            <div class="text-slate-200 font-medium">Clause-level</div>
-            <div class="text-xs">Explain & suggest fallback text</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Animated Hero Mockup -->
-    <div class="relative group">
-      <div class="glass soft-shadow overflow-hidden border border-slate-700 rounded-3xl animated-gradient transition-all duration-700 group-hover:scale-105 group-hover:shadow-2xl">
-        <div class="p-7">
-          <div class="flex items-center justify-between">
-            <div class="text-sm text-slate-400">Contract — <span class="text-[#50E3C2]">draft.pdf</span></div>
-            <span class="text-xs bg-slate-800 px-2 py-1 rounded-full">Offline</span>
-          </div>
-          <div class="mt-5 space-y-4">
-            <div class="bg-[#061826] rounded-lg p-4 border-l-4 border-red-400/60 hover:scale-105 transition transform">
-              <p class="text-sm leading-relaxed text-slate-200">The Company shall <span class="bg-red-600/30 px-1 rounded text-red-200">indemnify</span> the Client for any claims arising from...</p>
-            </div>
-            <div class="bg-[#061826] rounded-lg p-4 border-l-4 border-amber-400/60 hover:scale-105 transition transform">
-              <p class="text-sm leading-relaxed text-slate-200">This Agreement shall <span class="bg-amber-500/25 px-1 rounded text-amber-200">automatically renew</span> for an additional 12 months...</p>
-            </div>
-            <div class="bg-[#061826] rounded-lg p-4 border-l-4 border-emerald-400/60 hover:scale-105 transition transform">
-              <p class="text-sm leading-relaxed text-slate-200">Either party may <span class="bg-emerald-500/20 px-1 rounded text-emerald-200">terminate</span> the agreement with 30 days' notice.</p>
+        <div class="hero-stats">
+          <div class="stat">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path d="M12 2v6l4 2" stroke="#50E3C2" stroke-width="1.7" stroke-linecap="round" fill="none"/></svg>
+            <div>
+              <div class="stat-title">100% Local</div>
+              <div class="stat-desc">No file leaves your device</div>
             </div>
           </div>
-          <div class="mt-6 pt-4 border-t border-slate-700 flex items-center justify-between">
-            <span class="text-xs text-slate-400">Clause Actions</span>
-            <div class="flex items-center gap-3">
-              <button class="text-xs bg-slate-800 px-3 py-1 rounded-full hover:bg-slate-700 transition">Explain</button>
-              <button class="text-xs bg-[#50E3C2] text-[#061219] px-3 py-1 rounded-full hover:bg-[#3bd27c] transition">Suggest fallback</button>
+          <div class="stat">
+            <svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" stroke="#50E3C2" stroke-width="1.7" fill="none"/></svg>
+            <div>
+              <div class="stat-title">Clause-level</div>
+              <div class="stat-desc">Explain & suggest fallback text</div>
             </div>
           </div>
         </div>
       </div>
-      <!-- Subtle glow effect -->
-      <div class="absolute -left-12 -top-10 w-40 h-40 rounded-full opacity-40 bg-gradient-to-r from-[#50E3C2] to-transparent blur-3xl pointer-events-none"></div>
-    </div>
+      <!-- Animated Hero Mockup -->
+      <div class="hero-mockup">
+        <div class="mockup-card">
+          <div class="mockup-content">
+            <div class="mockup-header">
+              <div>Contract — <span class="mockup-file">draft.pdf</span></div>
+              <span class="mockup-status">Offline</span>
+            </div>
+            <div class="mockup-clauses">
+              <div class="mockup-clause">
+                <p>The Company shall <span>indemnify</span> the Client for any claims arising from...</p>
+              </div>
+              <div class="mockup-clause renewal">
+                <p>This Agreement shall <span>automatically renew</span> for an additional 12 months...</p>
+              </div>
+              <div class="mockup-clause termination">
+                <p>Either party may <span>terminate</span> the agreement with 30 days' notice.</p>
+              </div>
+            </div>
+            <div class="mockup-actions">
+              <span>Clause Actions</span>
+              <div class="mockup-btns">
+                <button>Explain</button>
+                <button>Suggest fallback</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-glow"></div>
+      </div>
     </header>
-  
+  </div>
+
   <!-- FEATURES GRID -->
-  <section id="features" class="max-w-7xl mx-auto px-6 py-12 fade-in">
-    <h2 class="text-3xl font-extrabold text-white text-center mb-2">Privacy-first, Enterprise-Grade Features</h2>
-    <p class="text-slate-400 text-center max-w-3xl mx-auto mb-10">ClauseLight puts advanced clause-level legal clarity in your hands — with no data ever leaving your browser.</p>
-    <div class="mt-10 grid md:grid-cols-3 gap-7">
-      <div class="feature-card glass soft-shadow border border-slate-700 p-7 rounded-2xl transition-all">
-        <h3 class="font-semibold text-lg text-[#50E3C2]">Clause-level Detection</h3>
-        <p class="text-slate-400 mt-3 text-base">Identifies high-risk clauses — indemnity, auto-renewal, IP, termination, confidentiality — and provides safer rewording.</p>
+  <div class="container fade-in" id="features">
+    <section>
+      <h2 class="features-title">Privacy-first, Enterprise-Grade Features</h2>
+      <p class="features-desc">ClauseLight puts advanced clause-level legal clarity in your hands — with no data ever leaving your browser.</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3>Clause-level Detection</h3>
+          <p>Identifies high-risk clauses — indemnity, auto-renewal, IP, termination, confidentiality — and provides safer rewording.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Runs 100% in Browser</h3>
+          <p>All processing is local. No uploads, no accounts, no server logs — ever. Your contracts never leave your device.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Copy & Use Fallback Clauses</h3>
+          <p>One-click to copy plain English fallback language for risky clauses and propose edits with confidence.</p>
+        </div>
       </div>
-      <div class="feature-card glass soft-shadow border border-slate-700 p-7 rounded-2xl transition-all">
-        <h3 class="font-semibold text-lg text-[#50E3C2]">Runs 100% in Browser</h3>
-        <p class="text-slate-400 mt-3 text-base">All processing is local. No uploads, no accounts, no server logs — ever. Your contracts never leave your device.</p>
-      </div>
-      <div class="feature-card glass soft-shadow border border-slate-700 p-7 rounded-2xl transition-all">
-        <h3 class="font-semibold text-lg text-[#50E3C2]">Copy & Use Fallback Clauses</h3>
-        <p class="text-slate-400 mt-3 text-base">One-click to copy plain English fallback language for risky clauses and propose edits with confidence.</p>
-      </div>
-    </div>
     </section>
-  
+  </div>
+
   <!-- CTA + DEMO -->
-  <section id="try" class="max-w-4xl mx-auto px-6 py-14 fade-in">
-    <div class="rounded-3xl glass soft-shadow border border-slate-700 p-10">
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-6">
+  <div class="container fade-in" id="try">
+    <section>
+      <div class="demo-box">
+        <div class="demo-header">
+          <div>
+            <h3>Try ClauseLight Instantly</h3>
+            <p>Paste a contract paragraph below — ClauseLight will detect likely risk phrases and suggest fallback language (demo, all local).</p>
+          </div>
+          <div class="demo-links">
+            <a href="#donate">Support Development ❤️</a>
+            <a href="#ecosystem">Compliance Tracker →</a>
+          </div>
+        </div>
         <div>
-          <h3 class="text-2xl font-extrabold">Try ClauseLight Instantly</h3>
-          <p class="text-slate-400 text-base mt-2">Paste a contract paragraph below — ClauseLight will detect likely risk phrases and suggest fallback language (demo, all local).</p>
-        </div>
-        <div class="flex gap-3">
-          <a href="#donate" class="text-xs bg-slate-800 px-3 py-2 rounded-full hover:bg-slate-700 transition">Support Development ❤️</a>
-          <a href="#ecosystem" class="text-xs bg-[#50E3C2] text-[#061219] px-3 py-2 rounded-full hover:bg-[#3bd27c] transition">Compliance Tracker →</a>
-        </div>
-      </div>
-      <div class="mt-2 grid gap-4">
-        <textarea id="demoInput" rows="6" class="w-full bg-[#03121a] border border-slate-800 rounded-md p-4 text-slate-100 text-base" placeholder="Paste a contract clause, e.g. &quot;The Supplier shall indemnify the Client...&quot;"></textarea>
-        <div class="flex gap-3">
-          <button id="analyzeBtn" class="bg-[#50E3C2] text-[#061219] px-5 py-2.5 rounded-full font-bold transition cta-glow">Analyze (Demo)</button>
-          <button id="clearBtn" class="border border-slate-700 px-5 py-2.5 rounded-full text-slate-300 hover:bg-slate-800 transition">Clear</button>
-        </div>
-        <div id="demoResult" class="mt-5 p-5 rounded-xl bg-[#061426] text-slate-200 hidden">
-          <div class="font-semibold text-lg">Detected risk: <span id="riskLabel" class="text-[#50E3C2]"></span></div>
-          <div class="mt-2 text-slate-400" id="explainText"></div>
-          <div class="mt-3 flex gap-3 items-center">
-            <button id="copyFallback" class="bg-slate-800 px-4 py-2 rounded hover:bg-slate-700 transition">Copy fallback</button>
-            <span id="fallbackText" class="text-[#50E3C2] text-sm"></span>
+          <textarea id="demoInput" rows="6" placeholder="Paste a contract clause, e.g. &quot;The Supplier shall indemnify the Customer against all claims...&quot;"></textarea>
+          <div class="demo-controls">
+            <button id="analyzeBtn">Analyze (Demo)</button>
+            <button id="clearBtn">Clear</button>
+          </div>
+          <div id="demoResult">
+            <div class="font-semibold text-lg">Detected risk: <span id="riskLabel" style="color:#50E3C2"></span></div>
+            <div class="mt-2" id="explainText" style="color:#94a3b8"></div>
+            <div class="mt-3" style="display:flex; gap:12px; align-items:center;">
+              <button id="copyFallback">Copy fallback</button>
+              <span id="fallbackText"></span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <!-- Monetization Section -->
-    <div id="ecosystem" class="mt-8 text-center text-base text-slate-400 rounded-xl bg-[#061426] glass soft-shadow p-6">
-      <span class="font-semibold text-[#50E3C2]">Need compliance tracking beyond contracts?</span>
-      <a href="https://your-saas-url.com/?utm_source=clauselight" class="ml-2 text-[#50E3C2] underline hover:text-[#3bd27c]">Try Compliance Tracker →</a>
-      <span class="ml-2 text-xs text-slate-500">(Recommended for legal & compliance teams)</span>
-    </div>
-    <div id="donate" class="mt-4 text-center text-base">
-      <span class="text-slate-300 font-medium">ClauseLight is free & privacy-first. If this saved you time or legal costs, <a href="https://www.buymeacoffee.com/yourprofile" class="text-[#50E3C2] underline hover:text-[#3bd27c]">support development</a> ❤️</span>
-    </div>
+      <div class="ecosystem" id="ecosystem">
+        <span class="highlight">Need compliance tracking beyond contracts?</span>
+        <a href="https://your-saas-url.com/?utm_source=clauselight">Try Compliance Tracker →</a>
+        <span style="margin-left:8px;font-size:13px;color:#64748b;">(Recommended for legal & compliance teams)</span>
+      </div>
+      <div class="donate" id="donate">
+        ClauseLight is free & privacy-first. If this saved you time or legal costs,
+        <a href="https://www.buymeacoffee.com/yourprofile" class="donate-link">buy us a coffee</a>!
+      </div>
     </section>
-  
+  </div>
 
   <!-- SEO CONTENT SECTIONS -->
-  <section class="max-w-5xl mx-auto px-6 py-14 space-y-14 fade-in" aria-label="SEO and educational content">
-    <div>
-      <h2 class="text-2xl md:text-3xl font-bold mb-3 text-[#50E3C2]">What is a Clause Analyzer?</h2>
-      <p class="text-slate-300 text-lg">A <strong>clause analyzer</strong> is a tool that helps you instantly understand legal language by identifying key risks, obligations, and phrases inside contracts. Traditionally, lawyers would search for risks manually — but AI legal tools like ClauseLight automate this, clause-by-clause, right in your browser with no data ever leaving your device.</p>
-      <ul class="list-disc list-inside mt-4 text-slate-400">
+  <div class="container fade-in" id="seo-sections" aria-label="SEO and educational content">
+    <section class="seo-block">
+      <h2>What is a Clause Analyzer?</h2>
+      <p>
+        A <strong>clause analyzer</strong> is a tool that helps you instantly understand legal language by identifying key risks, obligations, and phrases inside contracts. ClauseLight uses local heuristics to surface indemnity, renewal, IP, and other high-impact terms.
+      </p>
+      <ul>
         <li>Keywords: contract analyzer, AI legal tool, analyze contracts, privacy legal AI</li>
       </ul>
-    </div>
-    <div>
-      <h2 class="text-2xl md:text-3xl font-bold mb-3 text-[#50E3C2]">Why Offline Contract Analysis Matters</h2>
-      <p class="text-slate-300 text-lg">Most contract tools require uploading your documents to the cloud. ClauseLight is <strong>offline-first</strong> — everything runs in your browser. This eliminates data leaks and aligns with privacy laws like GDPR and POPIA. Sensitive contracts (NDA, IP, MSA) never leave your device, so you stay in control.</p>
-      <ul class="list-disc list-inside mt-4 text-slate-400">
+    </section>
+    <section class="seo-block">
+      <h2>Why Offline Contract Analysis Matters</h2>
+      <p>
+        Most contract tools require uploading your documents to the cloud. ClauseLight is <strong>offline-first</strong> — everything runs in your browser. This eliminates privacy risks and makes it safe for confidential documents.
+      </p>
+      <ul>
         <li>Keywords: offline AI, contract privacy, data security legal tools</li>
       </ul>
-    </div>
-    <div>
-      <h2 class="text-2xl md:text-3xl font-bold mb-3 text-[#50E3C2]">How ClauseLight Helps Businesses and Freelancers</h2>
-      <p class="text-slate-300 text-lg">Whether you’re a freelancer signing NDAs or a startup reviewing vendor contracts, ClauseLight reveals hidden terms that could impact your rights or costs. Built for anyone needing <strong>legal clarity</strong> — solo founders, SMBs, legal ops, or privacy-conscious teams — ClauseLight empowers you to review contracts without the legal bill.</p>
-      <ul class="list-disc list-inside mt-4 text-slate-400">
+    </section>
+    <section class="seo-block">
+      <h2>How ClauseLight Helps Businesses and Freelancers</h2>
+      <p>
+        Whether you’re a freelancer signing NDAs or a startup reviewing vendor contracts, ClauseLight reveals hidden terms that could impact your rights or costs. Built for legal clarity, without complexity.
+      </p>
+      <ul>
         <li>Keywords: legal clarity, contract review for freelancers, SMB compliance tool</li>
       </ul>
-    </div>
-  </section>
+    </section>
+  </div>
 
   <!-- FOOTER -->
-  <footer class="max-w-7xl mx-auto px-6 py-10 text-slate-400 fade-in">
-    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-      <div>
-        <div class="font-semibold text-white text-xl">ClauseLight</div>
-        <div class="text-xs mt-1">Offline contract insight • Privacy-first legal AI</div>
+  <div class="container fade-in">
+    <footer>
+      <div class="footer-content">
+        <div>
+          <div class="footer-brand">ClauseLight</div>
+          <div style="font-size:13px; margin-top:6px;">Offline contract insight • Privacy-first legal AI</div>
+        </div>
+        <div style="font-size:15px;">© ClauseLight 2025. All rights reserved.</div>
+        <div class="footer-links">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Contact</a>
+        </div>
       </div>
-      <div class="text-sm">© ClauseLight 2025. All rights reserved.</div>
-      <div class="flex gap-4 text-sm">
-        <a href="#" class="hover:text-white">Privacy</a>
-        <a href="#" class="hover:text-white">Terms</a>
-        <a href="#" class="hover:text-white">Contact</a>
-      </div>
-    </div>
-  </footer>
+    </footer>
+  </div>
 
   <!-- DEMO ANALYZER LOGIC -->
   <script>
@@ -291,12 +807,12 @@
       explainText.textContent = explain;
       fallbackText.textContent = fallback;
       copyFallback.dataset.fallback = fallback;
-      demoResult.classList.remove('hidden');
+      demoResult.style.display = 'block';
     });
 
     clearBtn.addEventListener('click', () => {
       document.getElementById('demoInput').value = '';
-      demoResult.classList.add('hidden');
+      demoResult.style.display = 'none';
       fallbackText.textContent = '';
     });
 
