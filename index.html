@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ClauseLight — Offline Contract Analyzer & Clause-Level Risk Tool</title>
+  <meta name="description" content="ClauseLight is a premium, privacy-first contract analyzer that works 100% offline. Highlight risky clauses, generate fallback legal language, and gain legal clarity — all in your browser, no uploads.">
+  <link rel="canonical" href="https://your-github-username.github.io/clauselight/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="ClauseLight — Offline Contract Analyzer & Clause-Level Risk Tool">
+  <meta property="og:description" content="Instantly analyze contracts, highlight risky clauses, and generate fallback language — all locally and securely, right in your browser.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://your-github-username.github.io/clauselight/">
+  <meta property="og:image" content="https://your-github-username.github.io/clauselight/assets/og-clauselight.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@ClauseLight">
+  <meta name="twitter:title" content="ClauseLight — Offline Contract Analyzer">
+  <meta name="twitter:description" content="Analyze contracts and highlight risks in your browser — no uploads, no accounts.">
+  <meta name="twitter:image" content="https://your-github-username.github.io/clauselight/assets/og-clauselight.png">
+
+  <!-- Structured data: SoftwareApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ClauseLight",
+    "url": "https://your-github-username.github.io/clauselight/",
+    "description": "ClauseLight is a privacy-first, local-only contract analyzer that highlights risky clauses and suggests plain-English fallback language. No uploads, no accounts.",
+    "operatingSystem": "Web",
+    "applicationCategory": "LegalTechnology",
+    "author": {"@type":"Organization","name":"ClauseLight"},
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <!-- Favicon (SVG, data URI, premium look) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230B1C2A'/%3E%3Cpath d='M28 34h44v8H28zM28 50h44v8H28z' fill='%2350E3C2'/%3E%3Ccircle cx='80' cy='80' r='12' fill='%2350E3C2' fill-opacity='0.12'/%3E%3C/svg%3E">
+
+  <!-- Tailwind CDN (for production, swap with built CSS for best performance) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', 'Segoe UI', Arial, sans-serif; }
+    .glass { background: linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01)); backdrop-filter: blur(10px);}
+    .soft-shadow { box-shadow: 0 10px 40px rgba(20,30,50,0.29),0 1.5px 5px rgba(20,30,50,0.13);}
+    .accent-glow { filter: drop-shadow(0 6px 30px rgba(80,227,194,0.17)); }
+    .cta-glow { box-shadow: 0 0 0 4px #50E3C233; }
+    .animated-gradient {
+      background: linear-gradient(100deg, #50E3C2 20%, #3bd27c 80%, #1d3342 100%);
+      background-size: 200% 200%;
+      animation: gradientMove 5s ease-in-out infinite;
+    }
+    @keyframes gradientMove {
+      0% { background-position: 0% 80%;}
+      50% { background-position: 100% 20%;}
+      100% {background-position: 0% 80%;}
+    }
+    .feature-card:hover { transform: translateY(-4px) scale(1.015); box-shadow: 0 16px 40px rgba(80,227,194,0.10), 0 3px 8px rgba(20,30,50,0.18);}
+    .fade-in { animation: fadeIn 1s both;}
+    @keyframes fadeIn { from { opacity:0; transform:translateY(20px);} to {opacity:1; transform:none;}}
+  </style>
+</head>
+<body class="antialiased text-slate-100 bg-gradient-to-br from-[#07111a] via-[#071826] to-[#081426] bg-fixed">
+
+  <!-- NAV -->
+  <nav class="max-w-7xl mx-auto px-6 py-7 flex items-center justify-between fade-in" aria-label="Site Navigation">
+    <div class="flex items-center gap-4">
+      <div class="w-11 h-11 rounded-xl bg-[#0B1C2A] p-2 soft-shadow flex items-center justify-center">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" class="accent-glow">
+          <rect x="1" y="3" width="22" height="18" rx="3" fill="#071826"/>
+          <path d="M6 8h12M6 12h8" stroke="#50E3C2" stroke-width="1.7" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <span class="font-extrabold text-lg tracking-wide text-white">ClauseLight</span>
+        <div class="text-xs text-slate-400">Offline Contract Analyzer</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-5">
+      <a href="#features" class="text-sm text-slate-300 hover:text-white">Features</a>
+      <a href="#how" class="text-sm text-slate-300 hover:text-white">How it works</a>
+      <a href="#try" class="ml-4 inline-flex items-center gap-2 bg-[#50E3C2] text-[#061219] px-5 py-2.5 rounded-full font-semibold cta-glow shadow-md hover:bg-[#3bd27c] transition">Try Free</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="max-w-7xl mx-auto px-6 pt-10 pb-16 grid md:grid-cols-2 gap-10 items-center fade-in">
+    <div class="space-y-8">
+      <h1 class="text-4xl md:text-5xl font-extrabold leading-tight tracking-tight text-white">
+        Instantly Highlight Contract Risks — 100% Offline, In Your Browser
+      </h1>
+      <p class="text-slate-300 max-w-xl text-lg">ClauseLight is a privacy-first contract analyzer. Split contract text into clauses, highlight risks like <span class="text-[#50E3C2]">indemnity</span>, <span class="text-[#50E3C2]">auto-renewal</span> or <span class="text-[#50E3C2]">termination</span>, and generate plain-English fallback language — all without uploading your file.</p>
+      <div class="flex gap-4 mt-6">
+        <a href="#try" class="inline-flex items-center gap-2 bg-[#50E3C2] text-[#061219] px-6 py-3 rounded-full font-bold shadow-lg hover:bg-[#3bd27c] transition cta-glow text-lg">Paste Your Contract</a>
+        <a href="#how" class="inline-flex items-center gap-2 border border-slate-700 px-5 py-3 rounded-full text-base text-slate-300 hover:bg-slate-800 transition">See How It Works</a>
+      </div>
+      <div class="mt-7 flex flex-wrap gap-8 text-sm text-slate-400">
+        <div class="flex items-center gap-3">
+          <svg width="18" height="18" viewBox="0 0 24 24"><path d="M12 2v6l4 2" stroke="#50E3C2" stroke-width="1.7" stroke-linecap="round" fill="none"/></svg>
+          <div>
+            <div class="text-slate-200 font-medium">100% Local</div>
+            <div class="text-xs">No file leaves your device</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" stroke="#50E3C2" stroke-width="1.7" fill="none"/></svg>
+          <div>
+            <div class="text-slate-200 font-medium">Clause-level</div>
+            <div class="text-xs">Explain & suggest fallback text</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Animated Hero Mockup -->
+    <div class="relative group">
+      <div class="glass soft-shadow overflow-hidden border border-slate-700 rounded-3xl animated-gradient transition-all duration-700 group-hover:scale-105 group-hover:shadow-2xl">
+        <div class="p-7">
+          <div class="flex items-center justify-between">
+            <div class="text-sm text-slate-400">Contract — <span class="text-[#50E3C2]">draft.pdf</span></div>
+            <span class="text-xs bg-slate-800 px-2 py-1 rounded-full">Offline</span>
+          </div>
+          <div class="mt-5 space-y-4">
+            <div class="bg-[#061826] rounded-lg p-4 border-l-4 border-red-400/60 hover:scale-105 transition transform">
+              <p class="text-sm leading-relaxed text-slate-200">The Company shall <span class="bg-red-600/30 px-1 rounded text-red-200">indemnify</span> the Client for any claims arising from...</p>
+            </div>
+            <div class="bg-[#061826] rounded-lg p-4 border-l-4 border-amber-400/60 hover:scale-105 transition transform">
+              <p class="text-sm leading-relaxed text-slate-200">This Agreement shall <span class="bg-amber-500/25 px-1 rounded text-amber-200">automatically renew</span> for an additional 12 months...</p>
+            </div>
+            <div class="bg-[#061826] rounded-lg p-4 border-l-4 border-emerald-400/60 hover:scale-105 transition transform">
+              <p class="text-sm leading-relaxed text-slate-200">Either party may <span class="bg-emerald-500/20 px-1 rounded text-emerald-200">terminate</span> the agreement with 30 days' notice.</p>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-700 flex items-center justify-between">
+            <span class="text-xs text-slate-400">Clause Actions</span>
+            <div class="flex items-center gap-3">
+              <button class="text-xs bg-slate-800 px-3 py-1 rounded-full hover:bg-slate-700 transition">Explain</button>
+              <button class="text-xs bg-[#50E3C2] text-[#061219] px-3 py-1 rounded-full hover:bg-[#3bd27c] transition">Suggest fallback</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Subtle glow effect -->
+      <div class="absolute -left-12 -top-10 w-40 h-40 rounded-full opacity-40 bg-gradient-to-r from-[#50E3C2] to-transparent blur-3xl pointer-events-none"></div>
+    </div>
+  </header>
+
+  <!-- FEATURES GRID -->
+  <section id="features" class="max-w-7xl mx-auto px-6 py-12 fade-in">
+    <h2 class="text-3xl font-extrabold text-white text-center mb-2">Privacy-first, Enterprise-Grade Features</h2>
+    <p class="text-slate-400 text-center max-w-3xl mx-auto mb-10">ClauseLight puts advanced clause-level legal clarity in your hands — with no data ever leaving your browser.</p>
+    <div class="mt-10 grid md:grid-cols-3 gap-7">
+      <div class="feature-card glass soft-shadow border border-slate-700 p-7 rounded-2xl transition-all">
+        <h3 class="font-semibold text-lg text-[#50E3C2]">Clause-level Detection</h3>
+        <p class="text-slate-400 mt-3 text-base">Identifies high-risk clauses — indemnity, auto-renewal, IP, termination, confidentiality — and provides safer rewording.</p>
+      </div>
+      <div class="feature-card glass soft-shadow border border-slate-700 p-7 rounded-2xl transition-all">
+        <h3 class="font-semibold text-lg text-[#50E3C2]">Runs 100% in Browser</h3>
+        <p class="text-slate-400 mt-3 text-base">All processing is local. No uploads, no accounts, no server logs — ever. Your contracts never leave your device.</p>
+      </div>
+      <div class="feature-card glass soft-shadow border border-slate-700 p-7 rounded-2xl transition-all">
+        <h3 class="font-semibold text-lg text-[#50E3C2]">Copy & Use Fallback Clauses</h3>
+        <p class="text-slate-400 mt-3 text-base">One-click to copy plain English fallback language for risky clauses and propose edits with confidence.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA + DEMO -->
+  <section id="try" class="max-w-4xl mx-auto px-6 py-14 fade-in">
+    <div class="rounded-3xl glass soft-shadow border border-slate-700 p-10">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-6">
+        <div>
+          <h3 class="text-2xl font-extrabold">Try ClauseLight Instantly</h3>
+          <p class="text-slate-400 text-base mt-2">Paste a contract paragraph below — ClauseLight will detect likely risk phrases and suggest fallback language (demo, all local).</p>
+        </div>
+        <div class="flex gap-3">
+          <a href="#donate" class="text-xs bg-slate-800 px-3 py-2 rounded-full hover:bg-slate-700 transition">Support Development ❤️</a>
+          <a href="#ecosystem" class="text-xs bg-[#50E3C2] text-[#061219] px-3 py-2 rounded-full hover:bg-[#3bd27c] transition">Compliance Tracker →</a>
+        </div>
+      </div>
+      <div class="mt-2 grid gap-4">
+        <textarea id="demoInput" rows="6" class="w-full bg-[#03121a] border border-slate-800 rounded-md p-4 text-slate-100 text-base" placeholder="Paste a contract clause, e.g. &quot;The Supplier shall indemnify the Client...&quot;"></textarea>
+        <div class="flex gap-3">
+          <button id="analyzeBtn" class="bg-[#50E3C2] text-[#061219] px-5 py-2.5 rounded-full font-bold transition cta-glow">Analyze (Demo)</button>
+          <button id="clearBtn" class="border border-slate-700 px-5 py-2.5 rounded-full text-slate-300 hover:bg-slate-800 transition">Clear</button>
+        </div>
+        <div id="demoResult" class="mt-5 p-5 rounded-xl bg-[#061426] text-slate-200 hidden">
+          <div class="font-semibold text-lg">Detected risk: <span id="riskLabel" class="text-[#50E3C2]"></span></div>
+          <div class="mt-2 text-slate-400" id="explainText"></div>
+          <div class="mt-3 flex gap-3 items-center">
+            <button id="copyFallback" class="bg-slate-800 px-4 py-2 rounded hover:bg-slate-700 transition">Copy fallback</button>
+            <span id="fallbackText" class="text-[#50E3C2] text-sm"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Monetization Section -->
+    <div id="ecosystem" class="mt-8 text-center text-base text-slate-400 rounded-xl bg-[#061426] glass soft-shadow p-6">
+      <span class="font-semibold text-[#50E3C2]">Need compliance tracking beyond contracts?</span>
+      <a href="https://your-saas-url.com/?utm_source=clauselight" class="ml-2 text-[#50E3C2] underline hover:text-[#3bd27c]">Try Compliance Tracker →</a>
+      <span class="ml-2 text-xs text-slate-500">(Recommended for legal & compliance teams)</span>
+    </div>
+    <div id="donate" class="mt-4 text-center text-base">
+      <span class="text-slate-300 font-medium">ClauseLight is free & privacy-first. If this saved you time or legal costs, <a href="https://www.buymeacoffee.com/yourprofile" class="text-[#50E3C2] underline hover:text-[#3bd27c]">support development</a> ❤️</span>
+    </div>
+  </section>
+
+  <!-- SEO CONTENT SECTIONS -->
+  <section class="max-w-5xl mx-auto px-6 py-14 space-y-14 fade-in" aria-label="SEO and educational content">
+    <div>
+      <h2 class="text-2xl md:text-3xl font-bold mb-3 text-[#50E3C2]">What is a Clause Analyzer?</h2>
+      <p class="text-slate-300 text-lg">A <strong>clause analyzer</strong> is a tool that helps you instantly understand legal language by identifying key risks, obligations, and phrases inside contracts. Traditionally, lawyers would search for risks manually — but AI legal tools like ClauseLight automate this, clause-by-clause, right in your browser with no data ever leaving your device.</p>
+      <ul class="list-disc list-inside mt-4 text-slate-400">
+        <li>Keywords: contract analyzer, AI legal tool, analyze contracts, privacy legal AI</li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="text-2xl md:text-3xl font-bold mb-3 text-[#50E3C2]">Why Offline Contract Analysis Matters</h2>
+      <p class="text-slate-300 text-lg">Most contract tools require uploading your documents to the cloud. ClauseLight is <strong>offline-first</strong> — everything runs in your browser. This eliminates data leaks and aligns with privacy laws like GDPR and POPIA. Sensitive contracts (NDA, IP, MSA) never leave your device, so you stay in control.</p>
+      <ul class="list-disc list-inside mt-4 text-slate-400">
+        <li>Keywords: offline AI, contract privacy, data security legal tools</li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="text-2xl md:text-3xl font-bold mb-3 text-[#50E3C2]">How ClauseLight Helps Businesses and Freelancers</h2>
+      <p class="text-slate-300 text-lg">Whether you’re a freelancer signing NDAs or a startup reviewing vendor contracts, ClauseLight reveals hidden terms that could impact your rights or costs. Built for anyone needing <strong>legal clarity</strong> — solo founders, SMBs, legal ops, or privacy-conscious teams — ClauseLight empowers you to review contracts without the legal bill.</p>
+      <ul class="list-disc list-inside mt-4 text-slate-400">
+        <li>Keywords: legal clarity, contract review for freelancers, SMB compliance tool</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="max-w-7xl mx-auto px-6 py-10 text-slate-400 fade-in">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+      <div>
+        <div class="font-semibold text-white text-xl">ClauseLight</div>
+        <div class="text-xs mt-1">Offline contract insight • Privacy-first legal AI</div>
+      </div>
+      <div class="text-sm">© ClauseLight 2025. All rights reserved.</div>
+      <div class="flex gap-4 text-sm">
+        <a href="#" class="hover:text-white">Privacy</a>
+        <a href="#" class="hover:text-white">Terms</a>
+        <a href="#" class="hover:text-white">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- DEMO ANALYZER LOGIC -->
+  <script>
+    // Premium-feel demo analyzer (expand heuristics as needed)
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const demoResult = document.getElementById('demoResult');
+    const riskLabel = document.getElementById('riskLabel');
+    const explainText = document.getElementById('explainText');
+    const copyFallback = document.getElementById('copyFallback');
+    const fallbackText = document.getElementById('fallbackText');
+
+    analyzeBtn.addEventListener('click', () => {
+      const text = document.getElementById('demoInput').value.toLowerCase();
+      if (!text.trim()) return;
+      let risk = 'Low';
+      let explain = 'No obvious high-risk phrase detected.';
+      let fallback = 'No fallback suggestion.';
+
+      if (text.includes('indemnify') || text.includes('hold harmless')) {
+        risk = 'High — Indemnity';
+        explain = 'This clause transfers broad liability; consider mutual indemnification or limiting to direct damages.';
+        fallback = 'The parties shall indemnify each other only for direct damages caused by gross negligence or willful misconduct.';
+      } else if (text.includes('automatic renew') || text.includes('automatically renew')) {
+        risk = 'Medium — Auto-renewal';
+        explain = 'Auto-renewals may lock you in. Consider requiring explicit opt-in or a clear notice period.';
+        fallback = 'This Agreement renews for additional 12-month terms unless either party provides written notice of non-renewal at least 30 days prior to expiration.';
+      } else if (text.includes('terminate') && text.includes('for any reason')) {
+        risk = 'Medium — Termination';
+        explain = 'Termination for convenience is common, but check notice and cure periods to avoid sudden contract end.';
+        fallback = 'Either party may terminate this Agreement upon 30 days written notice; a material breach not cured within 14 days allows immediate termination.';
+      } else if (text.includes('intellectual property') || text.includes('ip ownership')) {
+        risk = 'Medium — IP Ownership';
+        explain = 'Check if IP created during the contract remains with you. Prefer “work for hire” or co-ownership language.';
+        fallback = 'All intellectual property developed under this Agreement shall be owned jointly unless otherwise agreed in writing.';
+      }
+
+      riskLabel.textContent = risk;
+      explainText.textContent = explain;
+      fallbackText.textContent = fallback;
+      copyFallback.dataset.fallback = fallback;
+      demoResult.classList.remove('hidden');
+    });
+
+    clearBtn.addEventListener('click', () => {
+      document.getElementById('demoInput').value = '';
+      demoResult.classList.add('hidden');
+      fallbackText.textContent = '';
+    });
+
+    copyFallback.addEventListener('click', () => {
+      const text = copyFallback.dataset.fallback || '';
+      if (!text || text === 'No fallback suggestion.') return;
+      navigator.clipboard.writeText(text).then(() => {
+        copyFallback.textContent = 'Copied ✓';
+        setTimeout(() => copyFallback.textContent = 'Copy fallback', 2000);
+      });
+    });
+  </script>
+</body>
+</html>
